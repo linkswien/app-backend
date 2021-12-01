@@ -1,8 +1,8 @@
 version: "3.9"
 services:
   app-backend-dev:
-    image: app-backend-dev
-    container_name: app-backend-dev
+    image: app-backend
+    container_name: ${COMPOSE_PROJECT_NAME:-app-backend}
     ports:
-      - 5000:8080 # host:container
+      - ${APP_BACKEND_PORT:-5000}:8080 # host:container
     restart: unless-stopped
