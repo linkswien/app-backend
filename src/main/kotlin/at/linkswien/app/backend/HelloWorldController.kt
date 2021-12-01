@@ -9,5 +9,5 @@ class HelloWorldController {
 
     @GetMapping("hello-world")
     @ResponseBody
-    suspend fun helloWorld() = "Hello w0rld!"
+    suspend fun helloWorld() = "Hello w0o0rld!"
 }
