@@ -25,6 +25,6 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd app-backend
-            git checkout $GITHUB_REF_NAME
+            git checkout ${{ github.ref_name }}
             git pull
-            ./deploy.sh $GITHUB_REF_NAME
+            ./deploy.sh ${{ github.ref_name }}
