@@ -7,6 +7,13 @@
    http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <include file="db-changelogs/01-initial-setup.xml" relativeToChangelogFile="true"/>
+    <changeSet author="Konrad Pozniak" id="initial setup">
+        <createTable  tableName="hellomessage">
+            <column  name="id"  type="INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column  name="message"  type="TEXT"/>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>
