@@ -6,3 +6,18 @@ services:
     ports:
       - ${APP_BACKEND_PORT:-5000}:8080 # host:container
     restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      - SPRING_R2DBC_URL=r2dbc:postgresql://db/links-app
+      - SPRING_R2DBC_USERNAME=links-app
+      - SPRING_R2DBC_PASSWORD=links1
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://db/links-app
+      - SPRING_LIQUIBASE_USER=links-app
+      - SPRING_LIQUIBASE_PASSWORD=links1
+  db:
+    image: 'postgres:14.1-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_USER=links-app
+      - POSTGRES_PASSWORD=links1
