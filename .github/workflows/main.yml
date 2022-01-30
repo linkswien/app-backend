@@ -24,6 +24,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
+            export OAUTH_CLIENTID=${{ secrets.OAUTH_CLIENTID }}
+            export OAUTH_CLIENTSECRET=${{ secrets.OAUTH_CLIENTSECRET }}
+            export OAUTH_REDIRECT_URI=${{ secrets.OAUTH_REDIRECT_URI }}
             cd app-backend
             git checkout ${{ github.ref_name }}
             git pull
