@@ -23,6 +23,8 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("org.liquibase:liquibase-core")
