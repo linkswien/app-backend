@@ -23,7 +23,7 @@ class LoginController(val config: BackendConfiguration) {
     @GetMapping("login-redirect")
     @ResponseBody
     suspend fun loginRedirect (@RequestParam redirectUri: String): ResponseEntity<String> {
-        val uri = UriComponentsBuilder.fromPath(config.authUri)
+        val uri = UriComponentsBuilder.fromUriString(config.authUri)
             .queryParam("response_type", "code")
             .queryParam("client_id", config.clientId)
             .queryParam("redirect_uri", redirectUri)
