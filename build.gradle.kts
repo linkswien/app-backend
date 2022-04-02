@@ -23,7 +23,10 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+
+	implementation("org.springframework.security:spring-security-oauth2-resource-server:5.6.1")
+	implementation("org.springframework.security:spring-security-oauth2-jose:5.6.1")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
