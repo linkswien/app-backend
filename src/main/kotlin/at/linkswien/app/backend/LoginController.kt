@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
+import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriComponentsBuilder
+import reactor.core.publisher.Mono
 
 @Controller
 class LoginController(val config: BackendConfiguration) {
@@ -22,7 +24,7 @@ class LoginController(val config: BackendConfiguration) {
 
     @GetMapping("login-redirect")
     @ResponseBody
-    suspend fun loginRedirect (@RequestParam redirectUri: String): ResponseEntity<String> {
+    suspend fun loginRedirect(@RequestParam redirectUri: String): ResponseEntity<String> {
         val uri = UriComponentsBuilder.fromUriString(config.authUri)
             .queryParam("response_type", "code")
             .queryParam("client_id", config.clientId)
@@ -43,13 +45,21 @@ class LoginController(val config: BackendConfiguration) {
     ): OAuth2Response {
         return client.post()
             .uri(config.tokenUri)
-            .headers{ headers -> headers.setBasicAuth(config.clientId, config.clientSecret)}
+            .headers { headers -> headers.setBasicAuth(config.clientId, config.clientSecret) }
             .body(
                 BodyInserters.fromFormData("grant_type", "authorization_code")
                     .with("code", code)
                     .with("redirect_uri", redirectUri)
             )
             .retrieve()
+            .onStatus(HttpStatus::isError) { response ->
+                response.bodyToMono(String::class.java)
+                    .flatMap { responseBody ->
+                        Mono.error(
+                            ResponseStatusException(response.statusCode(), responseBody)
+                        )
+                    }
+            }
             .awaitBody()
     }
 }
