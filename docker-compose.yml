@@ -21,6 +21,8 @@ services:
   db:
     image: 'postgres:14.1-alpine'
     container_name: db
+    ports:
+      - "15432:5432" # for access when developing
     environment:
       - POSTGRES_USER=links-app
       - POSTGRES_PASSWORD=links1
