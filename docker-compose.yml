@@ -9,9 +9,9 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_JDBC_URL=jdbc:postgresql://db/links-app
-      - SPRING_JDBC_USERNAME=links-app
-      - SPRING_JDBC_PASSWORD=links1
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/links-app
+      - SPRING_DATASOURCE_USERNAME=links-app
+      - SPRING_DATASOURCE_PASSWORD=links1
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://db/links-app
       - SPRING_LIQUIBASE_USER=links-app
       - SPRING_LIQUIBASE_PASSWORD=links1
