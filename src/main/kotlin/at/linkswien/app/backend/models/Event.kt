@@ -1,12 +1,29 @@
 package at.linkswien.app.backend.models
 
-import org.springframework.data.annotation.Id
 import java.time.Instant
+import javax.persistence.CascadeType
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.OneToOne
+import javax.persistence.Table
 
+@Entity
+@Table(name = "event")
 data class Event(
-    @Id val id: Int,
-    val typeId: Int,
-    val userId: Int,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int,
+
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "typeId", referencedColumnName = "id")
+    val type: EventType,
+
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    val user: User,
     val creationTs: Instant,
     val title: String,
     val headerImg: String,

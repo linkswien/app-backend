@@ -1,7 +1,9 @@
 package at.linkswien.app.backend.models
 
-import org.springframework.data.annotation.Id
+import javax.persistence.Id
+import javax.persistence.Entity
 
+@Entity
 data class Role(
     @Id val id: Int,
     val name: String,

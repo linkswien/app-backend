@@ -4,27 +4,24 @@ import at.linkswien.app.backend.config.BackendConfiguration
 import at.linkswien.app.backend.models.OAuth2Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Mono
 
-@Controller
+@RestController
 class LoginController(val config: BackendConfiguration) {
 
     private val client = WebClient.builder().build()
 
     @GetMapping("login-redirect")
-    @ResponseBody
-    suspend fun loginRedirect(@RequestParam redirectUri: String): ResponseEntity<String> {
+    fun loginRedirect(@RequestParam redirectUri: String): ResponseEntity<String> {
         val uri = UriComponentsBuilder.fromUriString(config.authUri)
             .queryParam("response_type", "code")
             .queryParam("client_id", config.clientId)
@@ -37,12 +34,11 @@ class LoginController(val config: BackendConfiguration) {
             .build()
     }
 
-    @PostMapping("api/v1/login")
-    @ResponseBody
-    suspend fun login(
+   @PostMapping("api/v1/login")
+    fun login(
         @RequestPart code: String,
         @RequestPart redirectUri: String
-    ): OAuth2Response {
+    ): ResponseEntity<OAuth2Response>? {
         return client.post()
             .uri(config.tokenUri)
             .headers { headers -> headers.setBasicAuth(config.clientId, config.clientSecret) }
@@ -60,6 +56,7 @@ class LoginController(val config: BackendConfiguration) {
                         )
                     }
             }
-            .awaitBody()
+            .toEntity(OAuth2Response::class.java)
+            .block()
     }
 }

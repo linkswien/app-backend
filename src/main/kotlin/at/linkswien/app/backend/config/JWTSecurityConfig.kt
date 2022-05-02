@@ -1,38 +1,32 @@
 package at.linkswien.app.backend.config
 
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
-import org.springframework.security.config.web.server.ServerHttpSecurity
-import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.reactive.CorsConfigurationSource
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
-@EnableWebFluxSecurity
 @Configuration
-class JWTSecurityConfig {
-    @Bean
-    fun securityWebFilterChain(
-        http: ServerHttpSecurity
-    ): SecurityWebFilterChain {
+@EnableWebSecurity
+class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 
-        http.authorizeExchange()
-            .pathMatchers("/login-redirect", "/api/v1/login").permitAll()
-            .anyExchange().authenticated()
+    override fun configure(http: HttpSecurity) {
+        http.authorizeRequests()
+            .antMatchers("/login-redirect", "/api/v1/login", "create-event").permitAll()
+            .anyRequest().authenticated()
             .and()
-            .csrf { x -> x.disable()}
-            .cors().configurationSource(createCorsConfigSource())
-            .and()
+            .csrf { x -> x.disable() }
+            .cors().disable()
             .oauth2ResourceServer()
             .jwt()
-        return http.build()
     }
 
     private fun createCorsConfigSource(): CorsConfigurationSource {
         val source = UrlBasedCorsConfigurationSource()
         val config = CorsConfiguration()
-        config.allowedOrigins = listOf("http://localhost:8080", "http://localhost:8081")
+        config.allowedOrigins = listOf("*")
         config.allowedMethods = listOf("*")
 
         source.registerCorsConfiguration("/**", config)
