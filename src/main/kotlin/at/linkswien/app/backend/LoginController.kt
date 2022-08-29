@@ -15,17 +15,16 @@ import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Mono
 
-@RestController
 class LoginController(val config: BackendConfiguration) {
 
     private val client = WebClient.builder().build()
 
-    @GetMapping("login-redirect")
-    fun loginRedirect(@RequestParam redirectUri: String): ResponseEntity<String> {
+    @GetMapping("api/v1/login/redirect")
+    fun loginRedirect(): ResponseEntity<String> {
         val uri = UriComponentsBuilder.fromUriString(config.authUri)
             .queryParam("response_type", "code")
             .queryParam("client_id", config.clientId)
-            .queryParam("redirect_uri", redirectUri)
+            .queryParam("redirect_uri", config.callbackUri)
             .build()
             .toUri()
 
@@ -34,10 +33,9 @@ class LoginController(val config: BackendConfiguration) {
             .build()
     }
 
-   @PostMapping("api/v1/login")
+    @PostMapping("api/v1/login/callback")
     fun login(
-        @RequestPart code: String,
-        @RequestPart redirectUri: String
+        @RequestPart code: String
     ): ResponseEntity<OAuth2Response>? {
         return client.post()
             .uri(config.tokenUri)
@@ -45,7 +43,7 @@ class LoginController(val config: BackendConfiguration) {
             .body(
                 BodyInserters.fromFormData("grant_type", "authorization_code")
                     .with("code", code)
-                    .with("redirect_uri", redirectUri)
+                    .with("redirect_uri", config.callbackUri)
             )
             .retrieve()
             .onStatus(HttpStatus::isError) { response ->
