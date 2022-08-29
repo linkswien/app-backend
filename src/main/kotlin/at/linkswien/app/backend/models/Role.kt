@@ -1,9 +1,9 @@
 package at.linkswien.app.backend.models
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.relational.core.mapping.Table
+import javax.persistence.Id
+import javax.persistence.Entity
 
-@Table("role")
+@Entity
 data class Role(
     @Id val id: Int,
     val name: String,

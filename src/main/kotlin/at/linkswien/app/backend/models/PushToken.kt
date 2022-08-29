@@ -1,10 +1,10 @@
 package at.linkswien.app.backend.models
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.relational.core.mapping.Table
+import javax.persistence.Id
 import java.time.Instant
+import javax.persistence.Entity
 
-@Table("pushToken")
+@Entity
 data class PushToken(
     @Id val id: Int,
     val userId: Int,
