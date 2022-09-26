@@ -14,7 +14,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
-            .antMatchers("/login-redirect", "/api/v1/login", "create-event").permitAll()
+            .antMatchers("/api/v1/login/redirect", "/api/v1/login/callback").permitAll()
             .anyRequest().authenticated()
             .and()
             .csrf { x -> x.disable() }

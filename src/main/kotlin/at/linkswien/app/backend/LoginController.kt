@@ -5,9 +5,7 @@ import at.linkswien.app.backend.models.OAuth2Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
@@ -15,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Mono
 
+@RestController
 class LoginController(val config: BackendConfiguration) {
 
     private val client = WebClient.builder().build()
@@ -33,10 +32,10 @@ class LoginController(val config: BackendConfiguration) {
             .build()
     }
 
-    @PostMapping("api/v1/login/callback")
+    @GetMapping("api/v1/login/callback")
     fun login(
-        @RequestPart code: String
-    ): ResponseEntity<OAuth2Response>? {
+        @RequestParam code: String
+    ): OAuth2Response? {
         return client.post()
             .uri(config.tokenUri)
             .headers { headers -> headers.setBasicAuth(config.clientId, config.clientSecret) }
@@ -45,16 +44,18 @@ class LoginController(val config: BackendConfiguration) {
                     .with("code", code)
                     .with("redirect_uri", config.callbackUri)
             )
-            .retrieve()
-            .onStatus(HttpStatus::isError) { response ->
-                response.bodyToMono(String::class.java)
-                    .flatMap { responseBody ->
-                        Mono.error(
-                            ResponseStatusException(response.statusCode(), responseBody)
-                        )
-                    }
+            .exchangeToMono { response ->
+                if (response.statusCode().is2xxSuccessful) {
+                    response.bodyToMono(OAuth2Response::class.java);
+                } else {
+                    response.bodyToMono(String::class.java)
+                        .flatMap { responseBody ->
+                            Mono.error(
+                                ResponseStatusException(response.statusCode(), responseBody)
+                            )
+                        }
+                }
             }
-            .toEntity(OAuth2Response::class.java)
             .block()
     }
 }
