@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.6.2"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.6.10"
-	kotlin("plugin.spring") version "1.6.10"
-	kotlin("plugin.jpa") version "1.6.10"
+	id("org.springframework.boot") version "2.7.3"
+	id("io.spring.dependency-management") version "1.0.13.RELEASE"
+	kotlin("jvm") version "1.7.10"
+	kotlin("plugin.spring") version "1.7.10"
+	kotlin("plugin.jpa") version "1.7.10"
 }
 
 group = "at.linkswien.app"
@@ -25,8 +25,8 @@ dependencies {
 
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
-	implementation("org.springframework.security:spring-security-oauth2-resource-server:5.6.3")
-	implementation("org.springframework.security:spring-security-oauth2-jose:5.6.3")
+	implementation("org.springframework.security:spring-security-oauth2-resource-server:5.7.3")
+	implementation("org.springframework.security:spring-security-oauth2-jose:5.7.3")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
