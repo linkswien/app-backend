@@ -1,7 +1,8 @@
 package at.linkswien.app.backend.repositories
 
-import at.linkswien.app.backend.models.User
+import at.linkswien.app.backend.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.repository.reactive.ReactiveCrudRepository
 
-interface UserRepository: JpaRepository<User, Int>
+interface UserRepository: JpaRepository<User, Int> {
+    fun findByEmail(email: String): User?
+}

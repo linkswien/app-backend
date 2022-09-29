@@ -5,7 +5,8 @@ create table "user"
 (
     id          serial
         constraint user_pk primary key,
-    email       varchar not null,
+    email       varchar not null
+        constraint email_unique unique,
     username    varchar not null,
     "firstName" varchar not null,
     "lastName"  varchar not null

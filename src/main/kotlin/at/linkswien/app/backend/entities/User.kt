@@ -1,6 +1,7 @@
-package at.linkswien.app.backend.models
+package at.linkswien.app.backend.entities
 
-import jdk.jshell.JShell.Subscription
+import com.fasterxml.jackson.annotation.JsonIgnore
+import javax.persistence.Column
 import javax.persistence.Id
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -17,6 +18,8 @@ data class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
 
+    @Column(unique = true)
+    @JsonIgnore
     val email: String,
     val username: String,
     val firstName: String,
@@ -24,16 +27,18 @@ data class User(
 
    @ManyToMany
    @JoinTable(
-      name = "userRoles",
+      name = "userRole",
       joinColumns = [JoinColumn(name = "userId")],
       inverseJoinColumns = [JoinColumn(name = "roleId")])
+   @JsonIgnore
    val roles: List<Role>,
 
    @ManyToMany
    @JoinTable(
-      name = "subscriptions",
+      name = "subscription",
       joinColumns = [JoinColumn(name = "userId")],
       inverseJoinColumns = [JoinColumn(name = "eventId")])
+   @JsonIgnore
    val eventSubscriptions: List<Event>
 )
 

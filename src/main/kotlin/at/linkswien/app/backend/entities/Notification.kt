@@ -1,4 +1,4 @@
-package at.linkswien.app.backend.models
+package at.linkswien.app.backend.entities
 
 import java.time.Instant
 import javax.persistence.Entity

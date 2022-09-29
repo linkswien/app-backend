@@ -1,7 +1,7 @@
 package at.linkswien.app.backend
 
 import at.linkswien.app.backend.config.BackendConfiguration
-import at.linkswien.app.backend.models.OAuth2Response
+import at.linkswien.app.backend.entities.OAuth2Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

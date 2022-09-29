@@ -1,4 +1,4 @@
-package at.linkswien.app.backend.models
+package at.linkswien.app.backend.entities
 
 data class OAuth2Response(
     val access_token: String,
