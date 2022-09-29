@@ -9,5 +9,5 @@ class BackendConfiguration(
     @Value("\${spring.security.oauth2.client.provider.linkslogin.token-uri}") val tokenUri: String,
     @Value("\${spring.security.oauth2.client.registration.linkslogin.clientId}") val clientId: String,
     @Value("\${spring.security.oauth2.client.registration.linkslogin.clientSecret}") val clientSecret: String,
-    @Value("\${oauth2.callbackUri}") val callbackUri: String
+    @Value("\${oauth.callbackUri}") val callbackUri: String
 )
